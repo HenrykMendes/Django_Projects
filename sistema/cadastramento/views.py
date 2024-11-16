@@ -9,19 +9,24 @@ def listar_clientes (request):
 
 #____________________________________________________________________________________________________________________
 
-def adicionar_clientes (request):
+from django.shortcuts import render, redirect
+from .forms import clienteForm
+
+def adicionar_clientes(request):
     if request.method == 'POST':
-        form = clienteForm (request.POST)
+        form = clienteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect ('listar_clientes')
-        else:
-            form =clienteForm()
-        return render ('cadastramento/adicionar_clientes.html', {'form' :form})
+            return redirect('listar_clientes')
+    else:
+        form = clienteForm()
+    
+    return render(request, 'cadastramento/adicionar_clientes.html', {'form': form})
+
 
 #____________________________________________________________________________________________________________________
 
-def atualizar_clientes (request, pk):
+def atualizar_clientes(request, pk):
     cliente = get_list_or_404 (cliente, pk=pk)
     if request.method == 'POST':
          form = clienteForm (request.POST, instance=cliente)
